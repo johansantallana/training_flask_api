@@ -1,9 +1,8 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-gundam = [
-{
+gundam = {
   "api": {
     "name": "gundam-seed-destiny-api",
     "version": "1.0",
@@ -52,7 +51,7 @@ gundam = [
     "language": "en"
   }
 }
-]
+
 
 @app.route('/')
 def home():
@@ -61,5 +60,11 @@ def home():
 @app.route('/users')
 def list_characters():
     return gundam
+
+@app.route('/users', methods=["POST"])
+def add_character():
+    gundam["data"].append(request.get_json())
+    gundam["meta"]["count"] = gundam["meta"]["count"] + 1
+    return "Gundam insertado con exito", 201
 
 app.run(host='0.0.0.0', port='5000', debug=True)
