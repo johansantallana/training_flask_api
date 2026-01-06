@@ -110,6 +110,15 @@ def delete_gundam(id):
 
     return "Gundam no encontrado o id incorrecto", 404
 
+@app.route('/users/<string:id>', methods=["PATCH"])
+def update_gundam(id):
+    body = request.get_json()
 
+    for gundam_item in gundam["data"]:
+        if gundam_item["id"] == id:
+            gundam_item["name"] = body["name"]
+            return "Gundam actualizado correctamente", 200
+
+    return "Gundam no encontrado o id incorrecto", 404
 
 app.run(host='0.0.0.0', port='5000', debug=True)
