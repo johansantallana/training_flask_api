@@ -87,7 +87,7 @@ gundam = {
 
 @app.route('/')
 def home():
-    return "API Gundam, puede usar la ruta /users para listar los personajes"s
+    return "API Gundam, puede usar la ruta /users para listar los personajes"
 
 @app.route('/users')
 def list_characters():
