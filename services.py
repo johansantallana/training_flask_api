@@ -29,3 +29,10 @@ def build_summary(data):
         response.append(temp)
 
     return response
+
+def find_max_id(data):
+    max_id = 0
+    for gundam in data:
+        if gundam['gundam_id'] > max_id:
+            max_id = gundam['gundam_id']
+    return max_id
