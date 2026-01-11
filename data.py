@@ -1,6 +1,3 @@
-from flask import Flask, jsonify
-app = Flask(__name__)
-
 data = [
     {
         "gundam_id": 1,
@@ -98,59 +95,3 @@ data = [
         ]
     }
 ]
-
-
-def build_summary(data):
-    response = []
-
-    for gundam in data:
-        total_damage = 0
-        total_weapons = 0
-        most_powerful_weapon_name = ""
-        most_powerful_weapon_damage = 0
-
-        for battle in gundam["battles"]:
-            for weapon in battle["weapons"]:
-                total_damage += weapon["damage"]
-                total_weapons += 1
-
-                if weapon["damage"] > most_powerful_weapon_damage:
-                    most_powerful_weapon_damage = weapon["damage"]
-                    most_powerful_weapon_name = weapon["name"]
-
-        temp = {
-            "gundam": gundam["name"],
-            "total_damage": total_damage,
-            "total_weapons_used": total_weapons,
-            "most_powerful_weapon": {
-                "name": most_powerful_weapon_name,
-                "damage": most_powerful_weapon_damage
-            }
-        }
-
-        response.append(temp)
-
-    return response
-
-@app.route('/')
-def welcome():
-    return ("Welcome to Gundam Seed API like study case...By Fr33d0m!!!")
-
-@app.route('/gundams')
-def gundams():
-    return jsonify(data)
-
-@app.route('/gundams/summary', methods = ["GET"])
-def gundams_summary():
-    return jsonify(build_summary(data)), 200
-
-@app.route('/gundam/<int:id>/summary', methods = ["GET"])
-def gundam_summary(id):
-    for gundam in data:
-        if gundam["gundam_id"] == id:
-            temp = [gundam]
-            return jsonify(build_summary(temp)[0]), 200
-    return {"error": "Gundam not found"}, 404
-
-if __name__ == "__main__":
-    app.run(debug=True)
