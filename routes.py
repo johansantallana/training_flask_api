@@ -68,3 +68,12 @@ def register_routes(app):
 
         data.append(new_gundam)
         return jsonify(new_gundam), 201
+
+    @app.route('/gundams/<int:id>', methods = ["DELETE"])
+    def delete_gundam(id):
+        for gundam in data:
+            if gundam['gundam_id'] == id:
+                data.remove(gundam)
+                return jsonify({"message": "Gundam Deleted", "gundam_id":id}), 200
+
+        return jsonify({"error": "Gundam not found"}), 404
