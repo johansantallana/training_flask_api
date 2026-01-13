@@ -77,3 +77,24 @@ def register_routes(app):
                 return jsonify({"message": "Gundam Deleted", "gundam_id":id}), 200
 
         return jsonify({"error": "Gundam not found"}), 404
+
+    @app.route('/gundams/<int:id>', methods = ["PUT"])
+    def update_gundam(id):
+        info = request.get_json()
+        if info is None:
+            return jsonify({'error': 'Body must be valid JSON'}), 400
+        for gundam in data:
+            if gundam["gundam_id"] == id:
+                if 'name' in info:
+                    if not isinstance(info["name"], str) or info["name"].strip() == "":
+                        return jsonify({"error": '"name" must be a non-empty string'}), 400
+                    gundam["name"] = info["name"]
+                
+                if 'battles' in info:
+                    if not isinstance(info["battles"], list):
+                        return jsonify({"error":"battles must be a list"}), 400
+                    gundam["battles"] = info["battles"]
+
+                return jsonify(gundam), 200
+
+        return jsonify({"error": "Gundam not found"}), 404       
