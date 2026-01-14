@@ -97,4 +97,4 @@ def register_routes(app):
 
                 return jsonify(gundam), 200
 
-        return jsonify({"error": "Gundam not found"}), 404       
+        return jsonify({"error": "Gundam not found"}), 404 
