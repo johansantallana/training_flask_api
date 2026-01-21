@@ -1,4 +1,4 @@
-from  models import db, Gundam
+from  models import db, Gundam, Battle, Weapon
 
 def health_check():
     total = Gundam.query.count()
@@ -77,3 +77,28 @@ def update_gundam_by_id(id, body):
         "name": gundam.name
     }, 200
 
+def create_battle(id, body):
+    if body is None or not isinstance(body, dict):
+        return {"error": "Invalid JSON body"}, 400    
+    if "name" not in body:
+        return {"error": "Field name is required"}, 400
+    name = body["name"]
+    if not isinstance(name, str) or name.strip() == "":
+        return {"error": "Flield 'Name' must be a non-empty string"}, 400
+    gundam = Gundam.query.filter_by(id = id).first()
+    if gundam is None:
+        return {"error": "Gundam not found"}, 404
+    
+    battle = Battle(
+        name = name.strip(),
+        gundam_id = id
+    )
+    
+    db.session.add(battle)
+    db.session.commit()
+    
+    return {
+        "battle_id": battle.id,
+        "name": battle.name,
+        "gundam_id": battle.gundam_id
+    }, 201

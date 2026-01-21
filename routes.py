@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from services import create_gundam, get_all_gundams, get_gundam_by_id, delete_gundam_by_id, update_gundam_by_id, health_check
+from services import create_gundam, get_all_gundams, get_gundam_by_id, delete_gundam_by_id, update_gundam_by_id, health_check, create_battle
 
 def register_routes(app):
 
@@ -37,4 +37,10 @@ def register_routes(app):
     def update_gundam(id):
         gundam = request.get_json()
         result, status_code = update_gundam_by_id(id, gundam)
+        return jsonify(result), status_code
+    
+    @app.route('/gundams/<int:id>/battles', methods = ["POST"])
+    def add_battle(id):
+        body = request.get_json()
+        result, status_code = create_battle(id, body)
         return jsonify(result), status_code
