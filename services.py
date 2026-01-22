@@ -102,3 +102,39 @@ def create_battle(id, body):
         "name": battle.name,
         "gundam_id": battle.gundam_id
     }, 201
+    
+def create_weapon(id, body):
+    if body is None or not isinstance(body, dict):
+        return {"error": "Invalid JSON body"}, 400
+    if "name" not in body:
+        return {"error": "Field 'name' is required"}, 400
+    if "damage" not in body:
+        return {"error": "Field 'damage' is required"}, 400
+    name = body["name"]
+    damage = body["damage"]
+    
+    if not isinstance(name, str) or name.strip() == "":
+        return {"error": "Field 'name' must be a non-empty string"}, 400
+    if not isinstance(damage, int) or damage < 0:
+        return {"error": "Field 'damage' must be a positive integer"}, 400
+    
+    battle = Battle.query.filter_by(id=id).first()
+    
+    if battle is None:
+        return {"error": "Battle not found"}, 404
+    
+    weapon = Weapon(
+        name = name.strip(),
+        damage = damage,
+        battle_id = id
+    )
+    
+    db.session.add(weapon)
+    db.session.commit()
+    
+    return{
+        "weapon_id": weapon.id,
+        "name": weapon.name,
+        "damage": weapon.damage,
+        "battle_id": weapon.battle_id
+    }, 201
