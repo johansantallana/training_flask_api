@@ -12,6 +12,9 @@ API REST desarrollada con Flask para gestionar una colección de Gundams. Proyec
 ## 📋 Características
 
 - CRUD completo para gestión de Gundams
+- Creación de Battles asociadas a Gundams
+- Creación de Weapons asociadas a Battles
+- Relaciones uno a muchos (Gundam → Battles → Weapons)
 - Arquitectura limpia con separación de responsabilidades
 - Validación de datos de entrada
 - Manejo de errores HTTP
@@ -226,6 +229,68 @@ DELETE /gundams/{id}
 }
 ```
 
+---
+
+### 8. Crear una Battle para un Gundam
+```http
+POST /gundams/{id}/battles
+```
+
+**Parámetros:**
+- `id` (integer) - ID del Gundam
+
+**Body (JSON):**
+```json
+{
+  "name": "Battle of Orb"
+}
+```
+
+**Respuesta exitosa (201):**
+```json
+{
+  "battle_id": 1,
+  "name": "Battle of Orb",
+  "gundam_id": 1
+}
+```
+
+**Respuestas de error:**
+- `404` - Gundam no encontrado
+- `400` - JSON inválido o campo 'name' faltante/vacío
+
+---
+
+### 9. Crear una Weapon para una Battle
+```http
+POST /battles/{id}/weapons
+```
+
+**Parámetros:**
+- `id` (integer) - ID de la Battle
+
+**Body (JSON):**
+```json
+{
+  "name": "Beam Saber",
+  "damage": 100
+}
+```
+
+**Respuesta exitosa (201):**
+```json
+{
+  "weapon_id": 1,
+  "name": "Beam Saber",
+  "damage": 100,
+  "battle_id": 1
+}
+```
+
+**Respuestas de error:**
+- `404` - Battle no encontrada
+- `400` - JSON inválido, campos faltantes, o 'damage' no es entero positivo
+
 ## 🧪 Ejemplos con cURL
 
 ### Crear un Gundam
@@ -257,6 +322,20 @@ curl -X PUT http://127.0.0.1:5000/gundams/1 \
 curl -X DELETE http://127.0.0.1:5000/gundams/1
 ```
 
+### Crear una Battle para un Gundam
+```bash
+curl -X POST http://127.0.0.1:5000/gundams/1/battles \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Battle of Orb"}'
+```
+
+### Crear una Weapon para una Battle
+```bash
+curl -X POST http://127.0.0.1:5000/battles/1/weapons \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Beam Saber", "damage": 100}'
+```
+
 ## 📊 Modelo de Datos
 
 ### Gundam
@@ -266,12 +345,51 @@ curl -X DELETE http://127.0.0.1:5000/gundams/1
 | id    | Integer | Identificador único (PK)   |
 | name  | String  | Nombre del Gundam (100 chars) |
 
+### Battle
+
+| Campo     | Tipo    | Descripción                     |
+|-----------|---------|--------------------------------|
+| id        | Integer | Identificador único (PK)        |
+| name      | String  | Nombre de la batalla (100 chars)|
+| gundam_id | Integer | FK → Gundam.id                  |
+
+### Weapon
+
+| Campo     | Tipo    | Descripción                     |
+|-----------|---------|--------------------------------|
+| id        | Integer | Identificador único (PK)        |
+| name      | String  | Nombre del arma (100 chars)     |
+| damage    | Integer | Daño del arma                   |
+| battle_id | Integer | FK → Battle.id                  |
+
+### Relaciones
+
+```
+Gundam (1) ──────< Battle (N)
+                      │
+Battle (1) ──────< Weapon (N)
+```
+
+- Un Gundam puede tener muchas Battles
+- Una Battle puede tener muchas Weapons
+- Se usa `cascade="all, delete-orphan"` (al borrar un padre, se borran sus hijos)
+
 ## 🛡️ Validaciones
 
+### Gundam y Battle
 - El campo `name` es obligatorio
 - El `name` no puede estar vacío
 - El `name` debe ser una cadena de texto
 - Se eliminan espacios al inicio y final del `name`
+
+### Weapon
+- Los campos `name` y `damage` son obligatorios
+- El `name` debe ser una cadena de texto no vacía
+- El `damage` debe ser un entero mayor o igual a 0
+
+### Relaciones
+- No se puede crear una Battle sin un Gundam existente
+- No se puede crear una Weapon sin una Battle existente
 
 ## 🔧 Arquitectura
 
