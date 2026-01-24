@@ -20,12 +20,22 @@ def get_all_gundams():
 
 def get_gundam_by_id(id):
     gundam = Gundam.query.filter_by(id=id).first()
-    if gundam is not None:
-        return {
-            "gundam_id": gundam.id,
-            "name": gundam.name
+    if gundam is None:
+        return {"error": "Gundam not found"}, 404
+    
+    battles = []
+    for battle in gundam.battles:
+        battles.append({
+            "battle_id": battle.id,
+            "name": battle.name
+        })
+    
+    return {
+        "gundam_id": id,
+        "name": gundam.name,
+        "battles": battles
         }, 200
-    return {"error": "Gundam not found"}, 404
+    
 
 def create_gundam(gundam):
     if gundam is None or not isinstance(gundam, dict):
