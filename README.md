@@ -15,6 +15,7 @@ API REST desarrollada con Flask para gestionar una colección de Gundams. Proyec
 - Creación de Battles asociadas a Gundams
 - Creación de Weapons asociadas a Battles
 - Relaciones uno a muchos (Gundam → Battles → Weapons)
+- Respuestas con JSON anidado (nested JSON)
 - Arquitectura limpia con separación de responsabilidades
 - Validación de datos de entrada
 - Manejo de errores HTTP
@@ -106,7 +107,7 @@ Verifica el estado de la API y retorna estadísticas.
 
 ---
 
-### 3. Obtener todos los Gundams
+### 3. Obtener todos los Gundams (con Battles y Weapons anidados)
 ```http
 GET /gundams
 ```
@@ -116,18 +117,27 @@ GET /gundams
 [
   {
     "gundam_id": 1,
-    "name": "Strike Freedom"
-  },
-  {
-    "gundam_id": 2,
-    "name": "Infinite Justice"
+    "name": "Strike Freedom",
+    "battles": [
+      {
+        "battle_id": 1,
+        "name": "Battle of Orb",
+        "weapons": [
+          {
+            "weapon_id": 1,
+            "name": "Beam Saber",
+            "damage": 100
+          }
+        ]
+      }
+    ]
   }
 ]
 ```
 
 ---
 
-### 4. Obtener un Gundam por ID
+### 4. Obtener un Gundam por ID (con Battles)
 ```http
 GET /gundams/{id}
 ```
@@ -139,7 +149,13 @@ GET /gundams/{id}
 ```json
 {
   "gundam_id": 1,
-  "name": "Strike Freedom"
+  "name": "Strike Freedom",
+  "battles": [
+    {
+      "battle_id": 1,
+      "name": "Battle of Orb"
+    }
+  ]
 }
 ```
 
@@ -291,6 +307,39 @@ POST /battles/{id}/weapons
 - `404` - Battle no encontrada
 - `400` - JSON inválido, campos faltantes, o 'damage' no es entero positivo
 
+---
+
+### 10. Obtener una Battle por ID (con Weapons)
+```http
+GET /battles/{id}
+```
+
+**Parámetros:**
+- `id` (integer) - ID de la Battle
+
+**Respuesta exitosa (200):**
+```json
+{
+  "battle_id": 1,
+  "name": "Battle of Orb",
+  "gundam_id": 1,
+  "weapons": [
+    {
+      "weapon_id": 1,
+      "name": "Beam Saber",
+      "damage": 100
+    }
+  ]
+}
+```
+
+**Respuesta error (404):**
+```json
+{
+  "error": "Battle not found"
+}
+```
+
 ## 🧪 Ejemplos con cURL
 
 ### Crear un Gundam
@@ -334,6 +383,11 @@ curl -X POST http://127.0.0.1:5000/gundams/1/battles \
 curl -X POST http://127.0.0.1:5000/battles/1/weapons \
   -H "Content-Type: application/json" \
   -d '{"name": "Beam Saber", "damage": 100}'
+```
+
+### Obtener una Battle con sus Weapons
+```bash
+curl http://127.0.0.1:5000/battles/1
 ```
 
 ## 📊 Modelo de Datos

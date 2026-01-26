@@ -19,7 +19,6 @@ class Battle(db.Model):
     
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(100), nullable = False)
-
     gundam_id = db.Column(db.Integer, db.ForeignKey("gundams.id"), nullable = False)
     
     gundam = db.relationship("Gundam", back_populates = "battles")
@@ -36,7 +35,6 @@ class Weapon(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(100), nullable = False)
     damage = db.Column(db.Integer, nullable = False)
-
     battle_id = db.Column(db.Integer, db.ForeignKey("battles.id"), nullable = False)
 
     battle = db.relationship("Battle", back_populates = "weapons")

@@ -10,13 +10,30 @@ def health_check():
 
 def get_all_gundams():
     gundams = Gundam.query.all()
-    response = []
+    
+    list_gundam = []
     for gundam in gundams:
-        response.append({
+        list_battle = []
+        for battle in gundam.battles:
+            list_weapon = []
+            for weapon in battle.weapons:
+                list_weapon.append({
+                    "weapon_id": weapon.id,
+                    "name": weapon.name,
+                    "damage": weapon.damage
+                })
+            list_battle.append({
+                "battle_id": battle.id,
+                "name": battle.name,
+                "weapons": list_weapon
+            })
+        list_gundam.append({
             "gundam_id": gundam.id,
-            "name": gundam.name
+            "name": gundam.name,
+            "battles": list_battle
         })
-    return response, 200
+    
+    return list_gundam, 200
 
 def get_gundam_by_id(id):
     gundam = Gundam.query.filter_by(id=id).first()
