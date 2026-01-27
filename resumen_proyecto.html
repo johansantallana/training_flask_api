@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen - Gundam Seed API</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 30px;
+            background: #fff;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a1a2e;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #4a90d9;
+            padding-bottom: 15px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #1a1a2e;
+            font-size: 1.5em;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background: linear-gradient(135deg, #4a90d9 0%, #357abd 100%);
+            color: white;
+            border-radius: 5px;
+        }
+
+        h3 {
+            color: #2c3e50;
+            font-size: 1.2em;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            border-left: 4px solid #4a90d9;
+            padding-left: 12px;
+        }
+
+        p {
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+
+        th {
+            background: #4a90d9;
+            color: white;
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tr:hover {
+            background: #e8f4fd;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            color: #c7254e;
+        }
+
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85em;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        .function { color: #dcdcaa; }
+        .number { color: #b5cea8; }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #4a90d9;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            font-family: 'Consolas', monospace;
+            font-size: 1.1em;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .important {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        ul, ol {
+            margin: 10px 0 15px 25px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        .flow-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .flow-item {
+            background: #4a90d9;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+
+        .flow-arrow {
+            font-size: 1.5em;
+            color: #4a90d9;
+        }
+
+        .section-divider {
+            border: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #4a90d9, transparent);
+            margin: 30px 0;
+        }
+
+        @media print {
+            body {
+                padding: 20px;
+            }
+
+            h2 {
+                break-after: avoid;
+            }
+
+            pre, table {
+                break-inside: avoid;
+            }
+
+            .page-break {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Resumen General del Proyecto</h1>
+    <p class="subtitle">Gundam Seed API - Flask REST API con SQLAlchemy</p>
+
+    <!-- SECCION 1 -->
+    <h2>1. Arquitectura del Proyecto</h2>
+
+    <div class="flow-box">
+        <span class="flow-item">Usuario</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-item">Routes</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-item">Services</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-item">Models</span>
+    </div>
+
+    <p>El proyecto sigue el patrón de <strong>separación de responsabilidades</strong>:</p>
+
+    <table>
+        <tr>
+            <th>Archivo</th>
+            <th>Responsabilidad</th>
+        </tr>
+        <tr>
+            <td><code>app.py</code></td>
+            <td>Configuración y arranque de Flask</td>
+        </tr>
+        <tr>
+            <td><code>routes.py</code></td>
+            <td>Recibir peticiones HTTP y devolver respuestas</td>
+        </tr>
+        <tr>
+            <td><code>services.py</code></td>
+            <td>Lógica de negocio (validaciones, operaciones)</td>
+        </tr>
+        <tr>
+            <td><code>models.py</code></td>
+            <td>Definición de tablas y relaciones en la BD</td>
+        </tr>
+    </table>
+
+    <hr class="section-divider">
+
+    <!-- SECCION 2 -->
+    <h2>2. Flask - El Framework Web</h2>
+
+    <p><strong>¿Qué es Flask?</strong> Un micro-framework de Python para crear aplicaciones web y APIs.</p>
+
+    <h3>Conceptos clave en app.py</h3>
+
+    <pre><code><span class="keyword">from</span> flask <span class="keyword">import</span> Flask
+app = Flask(__name__)</code></pre>
+
+    <ul>
+        <li><code>Flask(__name__)</code> → Crea la aplicación</li>
+        <li><code>__name__</code> → Le dice a Flask dónde buscar recursos</li>
+    </ul>
+
+    <pre><code>app.config[<span class="string">"SQLALCHEMY_DATABASE_URI"</span>] = <span class="string">"sqlite:///gundams.db"</span></code></pre>
+
+    <ul>
+        <li>Configura la conexión a la base de datos SQLite</li>
+        <li><code>sqlite:///</code> → Protocolo de SQLite</li>
+        <li><code>gundams.db</code> → Archivo donde se guarda la BD</li>
+    </ul>
+
+    <pre><code>app.run(debug=<span class="keyword">True</span>)</code></pre>
+
+    <ul>
+        <li>Inicia el servidor en <code>http://127.0.0.1:5000</code></li>
+        <li><code>debug=True</code> → Recarga automática al guardar cambios</li>
+    </ul>
+
+    <hr class="section-divider">
+
+    <!-- SECCION 3 -->
+    <h2>3. SQLAlchemy - El ORM</h2>
+
+    <p><strong>¿Qué es un ORM (Object-Relational Mapping)?</strong> Permite trabajar con la base de datos usando <strong>objetos de Python</strong> en lugar de escribir SQL directamente.</p>
+
+    <table>
+        <tr>
+            <th>Sin ORM (SQL puro)</th>
+            <th>Con ORM (SQLAlchemy)</th>
+        </tr>
+        <tr>
+            <td><code>SELECT * FROM gundams</code></td>
+            <td><code>Gundam.query.all()</code></td>
+        </tr>
+        <tr>
+            <td><code>SELECT * FROM gundams WHERE id=1</code></td>
+            <td><code>Gundam.query.filter_by(id=1).first()</code></td>
+        </tr>
+        <tr>
+            <td><code>INSERT INTO gundams ...</code></td>
+            <td><code>db.session.add(gundam)</code></td>
+        </tr>
+        <tr>
+            <td><code>DELETE FROM gundams WHERE id=1</code></td>
+            <td><code>db.session.delete(gundam)</code></td>
+        </tr>
+    </table>
+
+    <h3>Inicialización</h3>
+    <pre><code>db = SQLAlchemy()      <span class="comment"># Crea instancia del ORM</span>
+db.init_app(app)       <span class="comment"># Conecta el ORM con Flask</span>
+db.create_all()        <span class="comment"># Crea las tablas en la BD</span></code></pre>
+
+    <hr class="section-divider">
+
+    <!-- SECCION 4 -->
+    <h2>4. Modelos - Definición de Tablas</h2>
+
+    <p><strong>¿Qué es un Modelo?</strong> Una clase de Python que representa una tabla en la base de datos. Cada instancia es una fila.</p>
+
+    <pre><code><span class="keyword">class</span> <span class="function">Gundam</span>(db.Model):
+    __tablename__ = <span class="string">"gundams"</span>  <span class="comment"># Nombre de la tabla</span>
+
+    id = db.Column(db.Integer, primary_key=<span class="keyword">True</span>)     <span class="comment"># Columna ID</span>
+    name = db.Column(db.String(<span class="number">100</span>), nullable=<span class="keyword">False</span>) <span class="comment"># Columna nombre</span></code></pre>
+
+    <h3>Tipos de columnas</h3>
+    <table>
+        <tr>
+            <th>Tipo</th>
+            <th>Descripción</th>
+        </tr>
+        <tr>
+            <td><code>db.Integer</code></td>
+            <td>Número entero</td>
+        </tr>
+        <tr>
+            <td><code>db.String(100)</code></td>
+            <td>Texto (máx 100 caracteres)</td>
+        </tr>
+        <tr>
+            <td><code>primary_key=True</code></td>
+            <td>Identificador único, auto-incrementa</td>
+        </tr>
+        <tr>
+            <td><code>nullable=False</code></td>
+            <td>Campo obligatorio (no puede ser NULL)</td>
+        </tr>
+    </table>
+
+    <hr class="section-divider">
+
+    <!-- SECCION 5 -->
+    <h2>5. Relaciones Entre Tablas</h2>
+
+    <p><strong>Relación Uno a Muchos (1:N)</strong></p>
+    <ul>
+        <li>Un Gundam puede tener MUCHAS Battles</li>
+        <li>Una Battle puede tener MUCHAS Weapons</li>
+    </ul>
+
+    <div class="diagram">
+        Gundam (1) ──────&lt; Battle (N) ──────&lt; Weapon (N)
+    </div>
+
+    <h3>Lado del "muchos" (Battle) - ForeignKey</h3>
+    <pre><code>gundam_id = db.Column(db.Integer, db.ForeignKey(<span class="string">"gundams.id"</span>), nullable=<span class="keyword">False</span>)</code></pre>
+    <ul>
+        <li><code>ForeignKey("gundams.id")</code> → Referencia a la tabla padre</li>
+        <li>Es la columna que <strong>SE GUARDA</strong> en la base de datos</li>
+    </ul>
+
+    <h3>Lado del "uno" (Gundam) - Relationship</h3>
+    <pre><code>battles = db.relationship(<span class="string">"Battle"</span>, back_populates=<span class="string">"gundam"</span>, cascade=<span class="string">"all, delete-orphan"</span>)</code></pre>
+    <ul>
+        <li><code>db.relationship()</code> → Relación virtual (NO se guarda en BD)</li>
+        <li><code>back_populates</code> → Conecta ambos lados de la relación</li>
+        <li><code>cascade="all, delete-orphan"</code> → Si borras el padre, se borran los hijos</li>
+    </ul>
+
+    <h3>Navegación bidireccional</h3>
+    <pre><code><span class="comment"># Desde Gundam → obtener sus Battles</span>
+gundam.battles  <span class="comment"># Lista de objetos Battle</span>
+
+<span class="comment"># Desde Battle → obtener su Gundam</span>
+battle.gundam   <span class="comment"># Objeto Gundam</span></code></pre>
+
+    <hr class="section-divider">
+
+    <!-- SECCION 6 -->
+    <h2>6. Rutas (Endpoints)</h2>
+
+    <p><strong>¿Qué es una ruta?</strong> Un punto de acceso a tu API. Define QUÉ URL responde y CON QUÉ método HTTP.</p>
+
+    <pre><code><span class="keyword">@app.route</span>(<span class="string">'/gundams'</span>, methods=[<span class="string">"GET"</span>])
+<span class="keyword">def</span> <span class="function">gundams</span>():
+    result, status_code = get_all_gundams()
+    <span class="keyword">return</span> jsonify(result), status_code</code></pre>
+
+    <h3>Anatomía de una ruta</h3>
+    <ul>
+        <li><code>@app.route('/gundams')</code> → Decorador que registra la URL</li>
+        <li><code>methods=["GET"]</code> → Métodos HTTP permitidos</li>
+        <li><code>jsonify()</code> → Convierte diccionario Python a JSON</li>
+        <li><code>return ..., status_code</code> → Respuesta + código HTTP</li>
+    </ul>
+
+    <h3>Parámetros en URL</h3>
+    <pre><code><span class="keyword">@app.route</span>(<span class="string">'/gundams/&lt;int:id&gt;'</span>)
+<span class="keyword">def</span> <span class="function">gundam_by_id</span>(id):
+    <span class="comment"># /gundams/5 → id = 5</span></code></pre>
+
+    <h3>Obtener datos del body</h3>
+    <pre><code>body = request.get_json()  <span class="comment"># Obtiene el JSON enviado en la petición</span></code></pre>
+
+    <hr class="section-divider">
+
+    <!-- SECCION 7 -->
+    <h2>7. Métodos HTTP (CRUD)</h2>
+
+    <table>
+        <tr>
+            <th>Método</th>
+            <th>Operación</th>
+            <th>Descripción</th>
+        </tr>
+        <tr>
+            <td><strong>GET</strong></td>
+            <td>Read</td>
+            <td>Obtener datos</td>
+        </tr>
+        <tr>
+            <td><strong>POST</strong></td>
+            <td>Create</td>
+            <td>Crear nuevo recurso</td>
+        </tr>
+        <tr>
+            <td><strong>PUT</strong></td>
+            <td>Update</td>
+            <td>Actualizar recurso existente</td>
+        </tr>
+        <tr>
+            <td><strong>DELETE</strong></td>
+            <td>Delete</td>
+            <td>Eliminar recurso</td>
+        </tr>
+    </table>
+
+    <div class="important">
+        <strong>CRUD</strong> = Create, Read, Update, Delete
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- SECCION 8 -->
+    <h2>8. Códigos de Estado HTTP</h2>
+
+    <table>
+        <tr>
+            <th>Código</th>
+            <th>Significado</th>
+            <th>Cuándo usarlo</th>
+        </tr>
+        <tr>
+            <td><strong>200</strong></td>
+            <td>OK</td>
+            <td>Operación exitosa (GET, PUT, DELETE)</td>
+        </tr>
+        <tr>
+            <td><strong>201</strong></td>
+            <td>Created</td>
+            <td>Recurso creado exitosamente (POST)</td>
+        </tr>
+        <tr>
+            <td><strong>400</strong></td>
+            <td>Bad Request</td>
+            <td>Datos inválidos del cliente</td>
+        </tr>
+        <tr>
+            <td><strong>404</strong></td>
+            <td>Not Found</td>
+            <td>Recurso no existe</td>
+        </tr>
+    </table>
+
+    <hr class="section-divider">
+
+    <!-- SECCION 9 -->
+    <h2>9. Services - Lógica de Negocio</h2>
+
+    <p><strong>¿Por qué separar la lógica?</strong></p>
+    <ul>
+        <li>Routes solo reciben/envían datos</li>
+        <li>Services contienen las reglas y validaciones</li>
+        <li>Más fácil de mantener y testear</li>
+    </ul>
+
+    <h3>Patrón común de una función service</h3>
+    <pre><code><span class="keyword">def</span> <span class="function">create_gundam</span>(gundam):
+    <span class="comment"># 1. VALIDACIONES</span>
+    <span class="keyword">if</span> gundam <span class="keyword">is None or not</span> isinstance(gundam, dict):
+        <span class="keyword">return</span> {<span class="string">"error"</span>: <span class="string">"Invalid JSON"</span>}, <span class="number">400</span>
+    <span class="keyword">if</span> <span class="string">"name"</span> <span class="keyword">not in</span> gundam:
+        <span class="keyword">return</span> {<span class="string">"error"</span>: <span class="string">"Field 'name' is required"</span>}, <span class="number">400</span>
+
+    <span class="comment"># 2. PROCESAR DATOS</span>
+    name = gundam[<span class="string">"name"</span>]
+    <span class="keyword">if not</span> isinstance(name, str) <span class="keyword">or</span> name.strip() == <span class="string">""</span>:
+        <span class="keyword">return</span> {<span class="string">"error"</span>: <span class="string">"Field 'name' must be a non-empty string"</span>}, <span class="number">400</span>
+
+    <span class="comment"># 3. OPERACIÓN EN BD</span>
+    new_gundam = Gundam(name=name.strip())
+    db.session.add(new_gundam)
+    db.session.commit()
+
+    <span class="comment"># 4. RESPUESTA</span>
+    <span class="keyword">return</span> {<span class="string">"gundam_id"</span>: new_gundam.id, <span class="string">"name"</span>: new_gundam.name}, <span class="number">201</span></code></pre>
+
+    <h3>Operaciones SQLAlchemy</h3>
+    <pre><code><span class="comment"># CREAR</span>
+db.session.add(objeto)
+db.session.commit()
+
+<span class="comment"># LEER</span>
+Gundam.query.all()                      <span class="comment"># Todos</span>
+Gundam.query.filter_by(id=<span class="number">1</span>).first()   <span class="comment"># Uno específico</span>
+
+<span class="comment"># ACTUALIZAR</span>
+gundam.name = <span class="string">"nuevo nombre"</span>
+db.session.commit()
+
+<span class="comment"># ELIMINAR</span>
+db.session.delete(gundam)
+db.session.commit()</code></pre>
+
+    <hr class="section-divider">
+
+    <!-- SECCION 10 -->
+    <h2>10. Serialización (Nested JSON)</h2>
+
+    <p><strong>El problema:</strong> Los objetos SQLAlchemy NO se pueden convertir directamente a JSON.</p>
+
+    <pre><code>gundam = Gundam.query.first()
+<span class="keyword">return</span> jsonify(gundam)  <span class="comment"># ERROR!</span></code></pre>
+
+    <p><strong>La solución:</strong> Convertir manualmente a diccionario:</p>
+
+    <pre><code><span class="keyword">return</span> {
+    <span class="string">"gundam_id"</span>: gundam.id,
+    <span class="string">"name"</span>: gundam.name
+}</code></pre>
+
+    <h3>JSON anidado (nested)</h3>
+    <p>Para incluir relaciones, usamos loops:</p>
+
+    <pre><code>list_gundam = []
+<span class="keyword">for</span> gundam <span class="keyword">in</span> gundams:
+    list_battle = []
+    <span class="keyword">for</span> battle <span class="keyword">in</span> gundam.battles:      <span class="comment"># Navegamos la relación</span>
+        list_battle.append({
+            <span class="string">"battle_id"</span>: battle.id,
+            <span class="string">"name"</span>: battle.name
+        })
+    list_gundam.append({
+        <span class="string">"gundam_id"</span>: gundam.id,
+        <span class="string">"name"</span>: gundam.name,
+        <span class="string">"battles"</span>: list_battle          <span class="comment"># Array anidado</span>
+    })</code></pre>
+
+    <h3>Resultado</h3>
+    <pre><code>{
+  <span class="string">"gundam_id"</span>: <span class="number">1</span>,
+  <span class="string">"name"</span>: <span class="string">"Strike Freedom"</span>,
+  <span class="string">"battles"</span>: [
+    {<span class="string">"battle_id"</span>: <span class="number">1</span>, <span class="string">"name"</span>: <span class="string">"Battle of Orb"</span>}
+  ]
+}</code></pre>
+
+    <hr class="section-divider">
+
+    <!-- SECCION 11 -->
+    <h2>11. Validaciones</h2>
+
+    <p><strong>¿Por qué validar?</strong></p>
+    <ul>
+        <li>El usuario puede enviar datos incorrectos</li>
+        <li>Prevenir errores en la base de datos</li>
+        <li>Dar mensajes de error claros</li>
+    </ul>
+
+    <h3>Validaciones comunes</h3>
+    <pre><code><span class="comment"># ¿Es un diccionario válido?</span>
+<span class="keyword">if</span> body <span class="keyword">is None or not</span> isinstance(body, dict):
+    <span class="keyword">return</span> {<span class="string">"error"</span>: <span class="string">"Invalid JSON body"</span>}, <span class="number">400</span>
+
+<span class="comment"># ¿Existe el campo requerido?</span>
+<span class="keyword">if</span> <span class="string">"name"</span> <span class="keyword">not in</span> body:
+    <span class="keyword">return</span> {<span class="string">"error"</span>: <span class="string">"Field 'name' is required"</span>}, <span class="number">400</span>
+
+<span class="comment"># ¿Es del tipo correcto y no está vacío?</span>
+<span class="keyword">if not</span> isinstance(name, str) <span class="keyword">or</span> name.strip() == <span class="string">""</span>:
+    <span class="keyword">return</span> {<span class="string">"error"</span>: <span class="string">"Field 'name' must be a non-empty string"</span>}, <span class="number">400</span>
+
+<span class="comment"># ¿El recurso existe?</span>
+gundam = Gundam.query.filter_by(id=id).first()
+<span class="keyword">if</span> gundam <span class="keyword">is None</span>:
+    <span class="keyword">return</span> {<span class="string">"error"</span>: <span class="string">"Gundam not found"</span>}, <span class="number">404</span></code></pre>
+
+    <hr class="section-divider">
+
+    <!-- SECCION 12 -->
+    <h2>12. Flujo Completo de una Petición</h2>
+
+    <p><strong>Ejemplo:</strong> POST /gundams con body <code>{"name": "Strike Freedom"}</code></p>
+
+    <div class="note">
+        <strong>Paso 1:</strong> Cliente envía petición POST a /gundams<br><br>
+        <strong>Paso 2:</strong> Flask recibe en routes.py<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• <code>@app.route('/gundams', methods=["POST"])</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• <code>body = request.get_json()</code> → <code>{"name": "Strike Freedom"}</code><br><br>
+        <strong>Paso 3:</strong> Llama a services.py<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• <code>create_gundam(body)</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• Valida el JSON<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• Crea objeto: <code>Gundam(name="Strike Freedom")</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• Guarda: <code>db.session.add()</code> + <code>commit()</code><br><br>
+        <strong>Paso 4:</strong> Retorna a routes.py<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• <code>{"gundam_id": 1, "name": "Strike Freedom"}, 201</code><br><br>
+        <strong>Paso 5:</strong> Flask responde al cliente<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• <code>jsonify(result)</code> → JSON<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• status_code 201
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- SECCION 13 -->
+    <h2>13. Resumen de Endpoints</h2>
+
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Método</th>
+            <th>Endpoint</th>
+            <th>Acción</th>
+        </tr>
+        <tr><td>1</td><td>GET</td><td><code>/</code></td><td>Bienvenida</td></tr>
+        <tr><td>2</td><td>GET</td><td><code>/health</code></td><td>Estado de la API</td></tr>
+        <tr><td>3</td><td>GET</td><td><code>/gundams</code></td><td>Listar todos (con battles y weapons)</td></tr>
+        <tr><td>4</td><td>GET</td><td><code>/gundams/{id}</code></td><td>Obtener uno (con battles)</td></tr>
+        <tr><td>5</td><td>POST</td><td><code>/gundams</code></td><td>Crear gundam</td></tr>
+        <tr><td>6</td><td>PUT</td><td><code>/gundams/{id}</code></td><td>Actualizar gundam</td></tr>
+        <tr><td>7</td><td>DELETE</td><td><code>/gundams/{id}</code></td><td>Eliminar gundam</td></tr>
+        <tr><td>8</td><td>POST</td><td><code>/gundams/{id}/battles</code></td><td>Crear battle para gundam</td></tr>
+        <tr><td>9</td><td>GET</td><td><code>/battles</code></td><td>Listar todas (con weapons)</td></tr>
+        <tr><td>10</td><td>GET</td><td><code>/battles/{id}</code></td><td>Obtener una (con weapons)</td></tr>
+        <tr><td>11</td><td>PUT</td><td><code>/battles/{id}</code></td><td>Actualizar battle</td></tr>
+        <tr><td>12</td><td>DELETE</td><td><code>/battles/{id}</code></td><td>Eliminar battle</td></tr>
+        <tr><td>13</td><td>POST</td><td><code>/battles/{id}/weapons</code></td><td>Crear weapon para battle</td></tr>
+        <tr><td>14</td><td>PUT</td><td><code>/weapons/{id}</code></td><td>Actualizar weapon</td></tr>
+        <tr><td>15</td><td>DELETE</td><td><code>/weapons/{id}</code></td><td>Eliminar weapon</td></tr>
+    </table>
+
+    <hr class="section-divider">
+
+    <p style="text-align: center; color: #666; margin-top: 40px;">
+        <strong>Gundam Seed API</strong> - Proyecto de estudio por <strong>Fr33d0m</strong>
+    </p>
+
+</body>
+</html>
