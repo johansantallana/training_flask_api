@@ -2,6 +2,8 @@
 
 API REST desarrollada con Flask para gestionar una colección de Gundams. Proyecto de estudio creado por Fr33d0m.
 
+📄 **[Ver Resumen Visual del Proyecto](https://htmlpreview.github.io/?https://github.com/johansantallana/training_flask_api/blob/main/project_summary.html)**
+
 ## 🚀 Tecnologías
 
 - **Python 3.x**
