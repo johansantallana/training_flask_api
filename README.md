@@ -24,6 +24,7 @@ API REST desarrollada con Flask para gestionar una colección de Gundams. Proyec
 - Health check endpoint
 
 ## 🗂️ Estructura del Proyecto
+
 ```
 .
 ├── app.py          # Punto de entrada de la aplicación
